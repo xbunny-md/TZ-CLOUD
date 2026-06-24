@@ -75,27 +75,36 @@ function App() {
           {/* Mobile Navigation Dropdown */}
           <AnimatePresence>
             {mobileMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="absolute top-[80px] left-4 right-4 z-50 glass-panel rounded-2xl p-4 flex flex-col gap-2 md:hidden"
-              >
-                {navItems.map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => handleTabChange(item.id as TabType)}
-                    className={`px-4 py-3 rounded-xl flex items-center gap-3 transition-all duration-300 ${
-                      activeTab === item.id 
-                        ? 'bg-white/10 border-white/20 border text-white' 
-                        : 'text-white/60 hover:text-white hover:bg-white/5 border border-transparent'
-                    }`}
-                  >
-                    <item.icon className={`w-5 h-5 ${activeTab === item.id ? item.color : ''}`} />
-                    <span className="font-medium">{item.label}</span>
-                  </button>
-                ))}
-              </motion.div>
+              <>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 z-40 bg-black/60 backdrop-blur-md md:hidden"
+                  onClick={() => setMobileMenuOpen(false)}
+                />
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="absolute top-[80px] left-4 right-4 z-50 glass-panel rounded-2xl p-4 flex flex-col gap-2 md:hidden bg-black/80 backdrop-blur-xl border-white/20 shadow-2xl"
+                >
+                  {navItems.map((item) => (
+                    <button
+                      key={item.id}
+                      onClick={() => handleTabChange(item.id as TabType)}
+                      className={`px-4 py-4 rounded-xl flex items-center gap-4 transition-all duration-300 ${
+                        activeTab === item.id 
+                          ? 'bg-white/10 border-white/30 border text-white' 
+                          : 'text-white/70 hover:text-white hover:bg-white/10 border border-transparent'
+                      }`}
+                    >
+                      <item.icon className={`w-6 h-6 ${activeTab === item.id ? item.color : ''}`} />
+                      <span className="font-semibold text-lg">{item.label}</span>
+                    </button>
+                  ))}
+                </motion.div>
+              </>
             )}
           </AnimatePresence>
         </header>

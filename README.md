@@ -1,20 +1,33 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# TZ CLOUD
 
-# Run and deploy your AI Studio app
+TZ Cloud is the leading digital ecosystem in Tanzania, designed to provide hyper-realistic gaming mods, robust AI capabilities, and comprehensive tech solutions.
 
-This contains everything you need to run your app locally.
+## Features
 
-View your app in AI Studio: https://ai.studio/apps/12159dda-2347-40be-9a37-3545361de8cd
+- **BUSSID Hub**: The ultimate destination for Bus Simulator Indonesia (BUSSID) enthusiasts in Tanzania. Offers luxury bus skins, realistic map mods, and custom Horn sounds.
+- **TZ CloudMind AI**: A fast, multi-model AI assistant powered by Groq (Llama 3, Mixtral) and Google Gemini. It can assist with coding, mod design, and answering technical questions.
+- **Cloud TV**: Watch live tech streams, gaming tournaments, and tutorials directly inside the platform.
+- **Dev Lab**: Real-time terminal logs, system analytics, and system uptime monitoring.
 
-## Run Locally
+## Tech Stack
 
-**Prerequisites:**  Node.js
+- **Frontend**: React 18, Tailwind CSS, Lucide Icons, Framer Motion
+- **Backend**: Express.js server, Node.js
+- **AI Models**: Groq (Llama 3 8B, Llama 3 70B, Mixtral 8x7B), Google Gemini (Gemini 2.5 Flash)
 
+## Setup Instructions
 
 1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+   ```bash
+   npm install
+   ```
+2. Configure `.env`:
+   Add your `GEMINI_API_KEY` and `GROQ_API_KEY` in the environment variables.
+3. Start the dev server:
+   ```bash
+   npm run dev
+   ```
+
+## Design Philosophy
+
+The application utilizes a dark, modern "Cosmic" theme, with neon green, plasma pink, and aurora purple accents. All components are styled using Tailwind CSS, featuring glassmorphism elements, backdrop blurs, and animated grids.

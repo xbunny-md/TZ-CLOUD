@@ -10,19 +10,22 @@ interface HomeTabProps {
 export default function HomeTab({ onNavigate }: HomeTabProps) {
   const [userCount, setUserCount] = useState(12400);
   const [downloadCount, setDownloadCount] = useState(89100);
+  const [uptime, setUptime] = useState(99.90);
 
   useEffect(() => {
+    // Initial rapid count up effect (optional, let's just make the continuous increment faster)
     const interval = setInterval(() => {
-      setUserCount(prev => prev + Math.floor(Math.random() * 3));
-      setDownloadCount(prev => prev + Math.floor(Math.random() * 5));
-    }, 3000);
+      setUserCount(prev => prev + Math.floor(Math.random() * 15) + 5);
+      setDownloadCount(prev => prev + Math.floor(Math.random() * 25) + 10);
+      setUptime(prev => Math.min(100, prev + (Math.random() * 0.01 - 0.002)));
+    }, 1500);
     return () => clearInterval(interval);
   }, []);
 
   const stats = [
-    { label: 'Active Users', value: `${(userCount / 1000).toFixed(1)}K`, icon: Users, color: 'text-neon-green' },
-    { label: 'Mod Downloads', value: `${(downloadCount / 1000).toFixed(1)}K`, icon: Download, color: 'text-plasma-pink' },
-    { label: 'System Uptime', value: '99.9%', icon: Activity, color: 'text-aurora-purple' },
+    { label: 'Active Users', value: `${(userCount).toLocaleString()}`, icon: Users, color: 'text-neon-green' },
+    { label: 'Total Downloads', value: `${(downloadCount).toLocaleString()}`, icon: Download, color: 'text-plasma-pink' },
+    { label: 'System Uptime', value: `${uptime.toFixed(3)}%`, icon: Activity, color: 'text-aurora-purple' },
   ];
 
   const faqs = [

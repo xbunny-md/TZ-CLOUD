@@ -19,7 +19,7 @@ const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 // System Instruction for the AI
 const SYSTEM_INSTRUCTION = `You are TZ CloudMind, the central AI for Tz Cloud, a futuristic East African tech hub and gaming portal. You are intelligent, sleek, and highly capable. You provide helpful, concise, and modern responses. You specialize in gaming (especially BUSSID and customizations), tech development, and general assistance. Provide syntax highlighting for code blocks. Be highly technical but accessible.`;
 
-async function callGroq(prompt: string, history: any[]) {
+async function callGroq(prompt: string, history: any[], model: string = "llama-3.1-8b-instant") {
   if (!GROQ_API_KEY) throw new Error("No Groq API Key");
   const messages = [
     { role: "system", content: SYSTEM_INSTRUCTION },
@@ -34,7 +34,7 @@ async function callGroq(prompt: string, history: any[]) {
       "Authorization": `Bearer ${GROQ_API_KEY}`
     },
     body: JSON.stringify({
-      model: "llama3-8b-8192",
+      model: model,
       messages,
       temperature: 0.7,
     })
@@ -48,14 +48,14 @@ async function callGroq(prompt: string, history: any[]) {
   return data.choices[0].message.content;
 }
 
-async function callGemini(prompt: string, history: any[]) {
+async function callGemini(prompt: string, history: any[], model: string = "gemini-2.5-flash") {
   const formattedHistory = history.map(m => ({
     role: m.role === 'system' ? 'model' : 'user',
     parts: [{ text: m.content }]
   }));
 
   const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
+    model: model,
     contents: [
       ...formattedHistory,
       { role: "user", parts: [{ text: prompt }] }
@@ -70,15 +70,21 @@ async function callGemini(prompt: string, history: any[]) {
 
 app.post("/api/chat", async (req, res) => {
   try {
-    const { prompt, history } = req.body;
+    const { prompt, history, model } = req.body;
     let text = "";
 
     try {
-      console.log("Attempting Groq...");
-      text = await callGroq(prompt, history);
+      if (model && model.includes("gemini")) {
+        console.log("Using Gemini model:", model);
+        text = await callGemini(prompt, history, model);
+      } else {
+        const groqModel = model || "llama-3.1-8b-instant";
+        console.log("Attempting Groq with model:", groqModel);
+        text = await callGroq(prompt, history, groqModel);
+      }
     } catch (e: any) {
-      console.log("Groq failed or key missing, falling back to Gemini...", e.message);
-      text = await callGemini(prompt, history);
+      console.log("Primary model failed, attempting fallback to Groq Llama 3 8B...", e.message);
+      text = await callGroq(prompt, history, "llama3-8b-8192");
     }
     
     res.json({ text });
